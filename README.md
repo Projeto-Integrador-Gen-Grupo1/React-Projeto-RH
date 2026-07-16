@@ -22,7 +22,7 @@ integrado a uma API Spring Boot para autenticação, gestão de departamentos, f
 
 <br/>
 
-**[Frontend](#-deploy)** • **[Backend](https://projeto-rh-sqib.onrender.com)** • **[Swagger](https://projeto-rh-sqib.onrender.com/swagger-ui/swagger-ui/index.html)** • **[Repositório Backend](https://github.com/Projeto-Integrador-Gen-Grupo1/Projeto-RH)**
+**[Frontend](https://react-projeto-rh.vercel.app)** • **[Backend](https://projeto-rh-sqib.onrender.com)** • **[Swagger](https://projeto-rh-sqib.onrender.com/swagger-ui/swagger-ui/index.html)** • **[Repositório Backend](https://github.com/Projeto-Integrador-Gen-Grupo1/Projeto-RH)**
 
 </div>
 
@@ -374,7 +374,7 @@ VITE_API_URL=https://projeto-rh-sqib.onrender.com
 
 | Ambiente | Link |
 |---|---|
-| **Frontend** | *Adicionar após deploy* |
+| **Frontend** | https://react-projeto-rh.vercel.app |
 | **Backend** | https://projeto-rh-sqib.onrender.com |
 | **Swagger** | https://projeto-rh-sqib.onrender.com/swagger-ui/swagger-ui/index.html |
 
