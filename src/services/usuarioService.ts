@@ -1,7 +1,7 @@
 import type { Usuario, UsuarioAtualizacao } from '../models/Usuario';
-import { isServerError } from '../utils/apiError';
+import { isNotFoundError, isServerError } from '../utils/apiError';
 import { onlyDigits } from '../utils/formatters';
-import { getCachedList, removeCachedItem, replaceCachedList, upsertCachedItem } from '../utils/localCache';
+import { getCachedList, mergeCachedList, removeCachedItem, replaceCachedList, upsertCachedItem } from '../utils/localCache';
 import { getPhotoForApi } from '../utils/photoUpload';
 import { api } from './api';
 
@@ -65,14 +65,14 @@ export async function buscarUsuarioPorId(id: number): Promise<Usuario> {
 export async function buscarUsuarioPorEmail(usuario: string): Promise<Usuario[]> {
   const response = await api.get<Usuario | Usuario[]>(`/usuarios/usuario/${encodeURIComponent(usuario)}`);
   const data = toUsuarioList(response.data).map(withCachedPhoto);
-  replaceCachedList(USUARIOS_CACHE_KEY, data, ['usuario', 'cpf']);
+  mergeCachedList(USUARIOS_CACHE_KEY, data, ['usuario', 'cpf']);
   return data;
 }
 
 export async function buscarUsuarioPorCpf(cpf: string): Promise<Usuario[]> {
   const response = await api.get<Usuario | Usuario[]>(`/usuarios/cpf/${encodeURIComponent(onlyDigits(cpf))}`);
   const data = toUsuarioList(response.data).map(withCachedPhoto);
-  replaceCachedList(USUARIOS_CACHE_KEY, data, ['usuario', 'cpf']);
+  mergeCachedList(USUARIOS_CACHE_KEY, data, ['usuario', 'cpf']);
   return data;
 }
 
@@ -97,8 +97,15 @@ export async function atualizarUsuario(dados: UsuarioAtualizacao): Promise<Usuar
 }
 
 export async function excluirUsuario(id: number): Promise<void> {
-  await api.delete(`/usuarios/${id}`);
-  removeCachedItem<Usuario>(USUARIOS_CACHE_KEY, id, ['usuario', 'cpf']);
+  try {
+    await api.delete(`/usuarios/${id}`);
+  } catch (error) {
+    if (!isNotFoundError(error) && !isServerError(error)) {
+      throw error;
+    }
+  } finally {
+    removeCachedItem<Usuario>(USUARIOS_CACHE_KEY, id, ['usuario', 'cpf']);
+  }
 }
 
 function getStoredAuthenticatedUser(): Usuario | null {

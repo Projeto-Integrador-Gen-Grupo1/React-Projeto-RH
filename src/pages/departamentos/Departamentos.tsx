@@ -175,13 +175,22 @@ function Departamentos() {
       return;
     }
 
+    const departamentoId = departamentoParaExcluir.id;
+
     try {
       setDeleting(true);
-      await excluirDepartamento(departamentoParaExcluir.id);
-      setDepartamentos((current) => current.filter((departamento) => departamento.id !== departamentoParaExcluir.id));
+      await excluirDepartamento(departamentoId);
+      setDepartamentos((current) => current.filter((departamento) => departamento.id !== departamentoId));
       toast.success('Departamento excluído com sucesso.');
       setDepartamentoParaExcluir(null);
     } catch (deleteError) {
+      if (isNotFoundError(deleteError)) {
+        setDepartamentos((current) => current.filter((departamento) => departamento.id !== departamentoId));
+        toast.info('Departamento removido da lista. Ele já havia sido excluído.');
+        setDepartamentoParaExcluir(null);
+        return;
+      }
+
       toast.error(getApiErrorMessage(deleteError));
     } finally {
       setDeleting(false);

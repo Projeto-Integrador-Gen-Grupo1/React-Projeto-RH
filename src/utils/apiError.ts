@@ -7,6 +7,40 @@ interface ApiErrorPayload {
   erro?: string;
 }
 
+function normalizeMessage(message: string): string {
+  return message
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
+function hasNotFoundMessage(messages: string[]): boolean {
+  return messages.some((message) => {
+    const normalized = normalizeMessage(message);
+    return normalized.includes('not found') || normalized.includes('nao encontrado');
+  });
+}
+
+function getErrorMessages(error: unknown): string[] {
+  if (axios.isAxiosError<ApiErrorPayload | string>(error)) {
+    const data = error.response?.data;
+    const messages = [error.message];
+
+    if (typeof data === 'string' && data.trim()) {
+      messages.push(data);
+    }
+
+    if (data && typeof data === 'object') {
+      const apiMessages = [data.message, data.mensagem, data.error, data.erro];
+      messages.push(...apiMessages.filter((message): message is string => Boolean(message)));
+    }
+
+    return messages;
+  }
+
+  return error instanceof Error ? [error.message] : [];
+}
+
 export function getApiErrorMessage(error: unknown): string {
   if (!axios.isAxiosError<ApiErrorPayload | string>(error)) {
     return 'Não foi possível concluir a ação. Tente novamente.';
@@ -51,7 +85,11 @@ export function getApiErrorMessage(error: unknown): string {
 }
 
 export function isNotFoundError(error: unknown): boolean {
-  return axios.isAxiosError(error) && error.response?.status === 404;
+  if (axios.isAxiosError(error) && error.response?.status === 404) {
+    return true;
+  }
+
+  return hasNotFoundMessage(getErrorMessages(error));
 }
 
 export function isServerError(error: unknown): boolean {

@@ -288,19 +288,34 @@ function Usuarios({ editarUsuarioLogado = false }: UsuariosProps) {
       return;
     }
 
+    const usuarioId = usuarioParaExcluir.id;
+
     try {
       setDeleting(true);
-      await excluirUsuario(usuarioParaExcluir.id);
-      setUsuarios((current) => current.filter((usuario) => usuario.id !== usuarioParaExcluir.id));
+      await excluirUsuario(usuarioId);
+      setUsuarios((current) => current.filter((usuario) => usuario.id !== usuarioId));
       toast.success('Usuário excluído com sucesso.');
 
-      if (usuarioParaExcluir.id === usuarioLogado?.id) {
+      if (usuarioId === usuarioLogado?.id) {
         logout();
         navigate('/login');
       }
 
       setUsuarioParaExcluir(null);
     } catch (deleteError) {
+      if (isNotFoundError(deleteError)) {
+        setUsuarios((current) => current.filter((usuario) => usuario.id !== usuarioId));
+        toast.info('Usuário removido da lista. Ele já havia sido excluído.');
+
+        if (usuarioId === usuarioLogado?.id) {
+          logout();
+          navigate('/login');
+        }
+
+        setUsuarioParaExcluir(null);
+        return;
+      }
+
       toast.error(getApiErrorMessage(deleteError));
     } finally {
       setDeleting(false);

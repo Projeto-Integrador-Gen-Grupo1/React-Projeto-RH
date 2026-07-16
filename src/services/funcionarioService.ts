@@ -1,6 +1,6 @@
 import type { Funcionario, FuncionarioPayload } from '../models/Funcionario';
-import { isServerError } from '../utils/apiError';
-import { getCachedList, removeCachedItem, replaceCachedList, upsertCachedItem } from '../utils/localCache';
+import { isNotFoundError, isServerError } from '../utils/apiError';
+import { getCachedList, mergeCachedList, removeCachedItem, replaceCachedList, upsertCachedItem } from '../utils/localCache';
 import { api } from './api';
 
 const FUNCIONARIOS_CACHE_KEY = 'projeto-rh:cache:funcionarios';
@@ -31,7 +31,7 @@ export async function buscarFuncionarioPorId(id: number): Promise<Funcionario> {
 export async function buscarFuncionariosPorCargo(cargo: string): Promise<Funcionario[]> {
   const response = await api.get<Funcionario | Funcionario[]>(`/funcionarios/cargo/${encodeURIComponent(cargo)}`);
   const data = toFuncionarioList(response.data);
-  replaceCachedList(FUNCIONARIOS_CACHE_KEY, data, ['nome', 'cargo']);
+  mergeCachedList(FUNCIONARIOS_CACHE_KEY, data, ['nome', 'cargo']);
   return data;
 }
 
@@ -53,6 +53,13 @@ export async function atualizarFuncionario(dados: FuncionarioPayload): Promise<F
 }
 
 export async function excluirFuncionario(id: number): Promise<void> {
-  await api.delete(`/funcionarios/${id}`);
-  removeCachedItem<Funcionario>(FUNCIONARIOS_CACHE_KEY, id, ['nome', 'cargo']);
+  try {
+    await api.delete(`/funcionarios/${id}`);
+  } catch (error) {
+    if (!isNotFoundError(error) && !isServerError(error)) {
+      throw error;
+    }
+  } finally {
+    removeCachedItem<Funcionario>(FUNCIONARIOS_CACHE_KEY, id, ['nome', 'cargo']);
+  }
 }

@@ -1,6 +1,6 @@
 import type { Departamento, DepartamentoPayload } from '../models/Departamento';
 import { isNotFoundError, isServerError } from '../utils/apiError';
-import { getCachedList, removeCachedItem, replaceCachedList, upsertCachedItem } from '../utils/localCache';
+import { getCachedList, mergeCachedList, removeCachedItem, replaceCachedList, upsertCachedItem } from '../utils/localCache';
 import { api } from './api';
 
 const DEPARTAMENTOS_CACHE_KEY = 'projeto-rh:cache:departamentos';
@@ -74,7 +74,7 @@ export async function buscarDepartamentosPorNome(nome: string): Promise<Departam
   try {
     const response = await api.get<Departamento | Departamento[]>(`/departamentos/nome/${encodeURIComponent(nome)}`);
     const data = toDepartamentoList(response.data);
-    replaceCachedList(DEPARTAMENTOS_CACHE_KEY, data, ['nome']);
+    mergeCachedList(DEPARTAMENTOS_CACHE_KEY, data, ['nome']);
     return data;
   } catch (error) {
     if (isServerError(error) || isNotFoundError(error)) {
@@ -119,6 +119,13 @@ export async function atualizarDepartamento(dados: DepartamentoPayload): Promise
 }
 
 export async function excluirDepartamento(id: number): Promise<void> {
-  await api.delete(`/departamentos/${id}`);
-  removeCachedItem<Departamento>(DEPARTAMENTOS_CACHE_KEY, id, ['nome']);
+  try {
+    await api.delete(`/departamentos/${id}`);
+  } catch (error) {
+    if (!isNotFoundError(error) && !isServerError(error)) {
+      throw error;
+    }
+  } finally {
+    removeCachedItem<Departamento>(DEPARTAMENTOS_CACHE_KEY, id, ['nome']);
+  }
 }

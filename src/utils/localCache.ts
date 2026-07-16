@@ -35,11 +35,17 @@ export function getCachedList<T>(key: string): T[] {
   return readList<T>(key);
 }
 
-export function replaceCachedList<T extends Identifiable>(key: string, items: T[], fallbackKeys: Array<keyof T>) {
+export function replaceCachedList<T extends Identifiable>(key: string, items: T[], _fallbackKeys: Array<keyof T>) {
+  void _fallbackKeys;
+  writeList(key, items);
+  return items;
+}
+
+export function mergeCachedList<T extends Identifiable>(key: string, items: T[], fallbackKeys: Array<keyof T>) {
   const existing = readList<T>(key);
   const merged = mergeByIdentity(existing, items, fallbackKeys);
   writeList(key, merged);
-  return merged;
+  return items;
 }
 
 export function upsertCachedItem<T extends Identifiable>(key: string, item: T, fallbackKeys: Array<keyof T>) {

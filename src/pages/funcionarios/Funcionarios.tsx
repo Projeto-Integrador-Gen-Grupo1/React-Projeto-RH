@@ -257,13 +257,22 @@ function Funcionarios() {
       return;
     }
 
+    const funcionarioId = funcionarioParaExcluir.id;
+
     try {
       setDeleting(true);
-      await excluirFuncionario(funcionarioParaExcluir.id);
-      setFuncionarios((current) => current.filter((funcionario) => funcionario.id !== funcionarioParaExcluir.id));
+      await excluirFuncionario(funcionarioId);
+      setFuncionarios((current) => current.filter((funcionario) => funcionario.id !== funcionarioId));
       toast.success('Funcionário excluído com sucesso.');
       setFuncionarioParaExcluir(null);
     } catch (deleteError) {
+      if (isNotFoundError(deleteError)) {
+        setFuncionarios((current) => current.filter((funcionario) => funcionario.id !== funcionarioId));
+        toast.info('Funcionário removido da lista. Ele já havia sido excluído.');
+        setFuncionarioParaExcluir(null);
+        return;
+      }
+
       toast.error(getApiErrorMessage(deleteError));
     } finally {
       setDeleting(false);
