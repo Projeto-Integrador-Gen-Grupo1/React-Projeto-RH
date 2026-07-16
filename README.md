@@ -2,7 +2,6 @@
 
 <img src="./public/images/logo-ekoa.png" alt="Logo Ekoa" width="160" />
 
-# Ekoa
 
 **Soluções em RH para Diversidade**
 
