@@ -11,7 +11,7 @@ function Sobre() {
             Diversidade não é apenas presença. É participação, respeito e oportunidade.
           </h1>
           <p className="mt-6 text-lg leading-8 text-slate-600">
-            O Projeto RH apoia empresas e pessoas na construção de processos mais humanos. A plataforma organiza dados
+            O Ekoa apoia empresas e pessoas na construção de processos mais humanos. A plataforma organiza dados
             essenciais de usuários, funcionários e departamentos para que a gestão de talentos seja mais clara, segura e
             inclusiva.
           </p>
