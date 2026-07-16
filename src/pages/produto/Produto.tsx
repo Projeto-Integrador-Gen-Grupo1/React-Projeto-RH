@@ -12,8 +12,8 @@ function Produto() {
               Mais inclusão. Mais inovação. Mais possibilidades.
             </h1>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              O frontend consome diretamente a API publicada do Projeto RH para cadastro, autenticação e gestão das
-              entidades disponíveis no Swagger: usuários, departamentos e funcionários.
+              A Ekoa reúne em um só lugar as informações essenciais de pessoas, equipes e áreas da empresa, facilitando
+              uma gestão de RH mais simples, organizada e inclusiva.
             </p>
             <NavLink
               to="/cadastro"
@@ -28,17 +28,17 @@ function Produto() {
               {
                 icon: UserCircleGear,
                 title: 'Usuários',
-                text: 'Cadastro, login, perfil, listagem, busca por e-mail ou CPF e exclusão quando a API permitir.',
+                text: 'Crie acessos, atualize perfis e mantenha as informações de cada pessoa sempre fáceis de encontrar.',
               },
               {
                 icon: Buildings,
                 title: 'Departamentos',
-                text: 'Criação, edição, busca por nome, exclusão com confirmação e estados vazios.',
+                text: 'Organize as áreas da empresa para conectar pessoas, responsabilidades e rotinas de trabalho.',
               },
               {
                 icon: IdentificationCard,
                 title: 'Funcionários',
-                text: 'Gestão de dados profissionais, vínculo com departamentos e busca por cargo.',
+                text: 'Acompanhe dados profissionais, cargos e vínculos com clareza para apoiar decisões mais humanas.',
               },
             ].map((item) => (
               <article key={item.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
