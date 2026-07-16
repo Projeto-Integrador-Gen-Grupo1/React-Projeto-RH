@@ -1,7 +1,7 @@
 import { Eye, EyeSlash, UserPlus } from '@phosphor-icons/react';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Navigate, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import PhotoPicker from '../../components/ui/PhotoPicker';
 import { useAuth } from '../../contexts/useAuth';
@@ -36,10 +36,6 @@ function Cadastro() {
   const [loading, setLoading] = useState(false);
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
-  }
 
   const updateField = (field: keyof CadastroForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -85,8 +81,8 @@ function Cadastro() {
         senha: form.senha,
         foto: form.foto.trim() || undefined,
       });
-      toast.success('Cadastro realizado. Agora faça login para acessar a plataforma.');
-      navigate('/login');
+      toast.success(isAuthenticated ? 'Usuário cadastrado com sucesso.' : 'Cadastro realizado. Agora faça login para acessar a plataforma.');
+      navigate(isAuthenticated ? '/usuarios' : '/login');
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     } finally {
@@ -98,11 +94,16 @@ function Cadastro() {
     <div className="bg-ekoa-paper px-4 py-14 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-3xl">
         <div className="mb-8">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-ekoa-purple-600">Criar conta</p>
-          <h1 className="mt-3 text-4xl font-black tracking-tight text-ekoa-navy">Faça parte dessa transformação</h1>
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-ekoa-purple-600">
+            {isAuthenticated ? 'Cadastrar usuário' : 'Criar conta'}
+          </p>
+          <h1 className="mt-3 text-4xl font-black tracking-tight text-ekoa-navy">
+            {isAuthenticated ? 'Adicione uma pessoa à plataforma' : 'Faça parte dessa transformação'}
+          </h1>
           <p className="mt-4 text-lg leading-8 text-slate-600">
-            Preencha apenas os dados necessários para criar seu acesso. Sua senha não será exibida nem armazenada no
-            navegador.
+            {isAuthenticated
+              ? 'Preencha os dados necessários para criar um novo acesso. Depois do cadastro, você voltará para a lista de usuários.'
+              : 'Preencha apenas os dados necessários para criar seu acesso. Sua senha não será exibida nem armazenada no navegador.'}
           </p>
         </div>
 
@@ -240,15 +241,17 @@ function Cadastro() {
             className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-ekoa-purple-600 px-5 py-3 text-base font-bold text-white transition hover:bg-ekoa-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ekoa-purple-600 disabled:opacity-70"
           >
             <UserPlus size={20} aria-hidden="true" />
-            {loading ? 'Criando conta...' : 'Criar conta'}
+            {loading ? 'Cadastrando...' : isAuthenticated ? 'Cadastrar usuário' : 'Criar conta'}
           </button>
 
-          <p className="mt-5 text-center text-sm text-slate-600">
-            Já tem conta?{' '}
-            <NavLink to="/login" className="font-bold text-ekoa-purple-700 hover:text-ekoa-navy">
-              Entrar
-            </NavLink>
-          </p>
+          {!isAuthenticated && (
+            <p className="mt-5 text-center text-sm text-slate-600">
+              Já tem conta?{' '}
+              <NavLink to="/login" className="font-bold text-ekoa-purple-700 hover:text-ekoa-navy">
+                Entrar
+              </NavLink>
+            </p>
+          )}
         </form>
       </div>
     </div>
