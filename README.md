@@ -1,75 +1,82 @@
-# React + TypeScript + Vite
+# Projeto RH
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend React para a plataforma de Recursos Humanos do Projeto RH. A aplicação consome a API publicada em:
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+https://projeto-rh-sqib.onrender.com/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Documentação Swagger consultada:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+https://projeto-rh-sqib.onrender.com/swagger-ui/swagger-ui/index.html
 ```
+
+## Tecnologias
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router DOM
+- Axios
+- Context API
+- React Toastify
+- Phosphor Icons
+
+## Configuração de ambiente
+
+Crie um arquivo `.env` na raiz do projeto com:
+
+```env
+VITE_API_URL=https://projeto-rh-sqib.onrender.com/
+```
+
+## Comandos
+
+```bash
+npm install
+npm run dev
+npm run build
+```
+
+## Rotas do frontend
+
+- `/` e `/home`: página inicial
+- `/sobre`: apresentação institucional
+- `/produto`: funcionalidades da plataforma
+- `/login`: autenticação
+- `/cadastro`: cadastro de usuário
+- `/dashboard`: área privada com indicadores
+- `/perfil`: atualização do usuário logado
+- `/usuarios`: listagem, busca e exclusão de usuários
+- `/departamentos`: CRUD de departamentos
+- `/funcionarios`: CRUD de funcionários
+- `*`: página 404
+
+## Endpoints integrados
+
+- `POST /usuarios/logar`
+- `POST /usuarios/cadastrar`
+- `GET /usuarios`
+- `GET /usuarios/{id}`
+- `GET /usuarios/usuario/{usuario}`
+- `GET /usuarios/cpf/{cpf}`
+- `PUT /usuarios`
+- `DELETE /usuarios/{id}`
+- `GET /departamentos`
+- `GET /departamentos/{id}`
+- `GET /departamentos/nome/{nome}`
+- `POST /departamentos`
+- `PUT /departamentos`
+- `DELETE /departamentos/{id}`
+- `GET /funcionarios`
+- `GET /funcionarios/{id}`
+- `GET /funcionarios/cargo/{cargo}`
+- `POST /funcionarios`
+- `PUT /funcionarios`
+- `DELETE /funcionarios/{id}`
+
+## Observações
+
+O backend não faz parte deste projeto. O frontend usa somente requisições HTTP para consumir a API publicada e envia o token JWT no cabeçalho `Authorization` nas rotas privadas.
