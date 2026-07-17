@@ -34,9 +34,18 @@ A documentação completa do projeto está disponível em:
 **[Grupo 01 — Ekoa Documento Prototipação de Classes](https://drive.google.com/file/d/1heBq1ZAsR9qWQ76w3E0GND5EFTUO9yR9/view?usp=sharing)**
 
 ---
+
+## 📋 Ferramenta de Organização
+
+A organização e o gerenciamento das atividades do projeto foram realizadas utilizando o **Trello**.
+
+**[Acesse o Board no Trello](https://trello.com/invite/b/6a57de3d78994ed9ac51a5b5/ATTI5000235b835312715503a172ae7d8407AB816E72/projeto-rh-ekoa)**
+
+---
 ## 📑 Sumário
 
 - [Sobre o Projeto](#-sobre-o-projeto)
+- [Ferramenta de Organização](#-ferramenta-de-organização)
 - [Funcionalidades](#-funcionalidades)
 - [Tecnologias](#-tecnologias)
 - [Arquitetura](#-arquitetura)
