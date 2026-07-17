@@ -27,7 +27,13 @@ integrado a uma API Spring Boot para autenticação, gestão de departamentos, f
 </div>
 
 ---
+## 📘 Documento de Prototipação das Classes
 
+A documentação completa do projeto está disponível em:
+
+**[Grupo 01 — Ekoa Documento Prototipação de Classes](https://drive.google.com/file/d/1heBq1ZAsR9qWQ76w3E0GND5EFTUO9yR9/view?usp=sharing)**
+
+---
 ## 📑 Sumário
 
 - [Sobre o Projeto](#-sobre-o-projeto)
@@ -173,6 +179,52 @@ O resultado é retornado automaticamente pela API e exibido no dashboard e na li
 - Todas as operações CRUD são **protegidas por token**.
 
 ---
+## 🗂 Diagrama Entidade-Relacionamento
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                         USUÁRIO                            │
+├─────────────────────────────────────────────────────────────┤
+│ id            : number      (PK, auto-gerado)              │
+│ nome          : string      (obrigatório)                  │
+│ cpf           : string      (opcional, 11 dígitos)         │
+│ usuario       : string      (e-mail, login)                │
+│ senha         : string      (obrigatório)                  │
+│ foto          : string      (URL ou base64, opcional)      │
+└─────────────────────────────────────────────────────────────┘
+                          │
+                          │ 1:N (usuários cadastram e acessam)
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│                       DEPARTAMENTO                         │
+├─────────────────────────────────────────────────────────────┤
+│ id            : number      (PK, auto-gerado)              │
+│ nome          : string      (obrigatório, ≥3 caracteres)   │
+│ descricao     : string      (opcional, ≤255 caracteres)    │
+└─────────────────────────────────────────────────────────────┘
+                          │
+                          │ 1:N (um departamento, vários funcionários)
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│                       FUNCIONÁRIO                          │
+├─────────────────────────────────────────────────────────────┤
+│ id                : number      (PK, auto-gerado)          │
+│ nome              : string      (obrigatório, ≥3 chars)    │
+│ cargo             : string      (obrigatório, ≥3 chars)    │
+│ salario           : number      (calculado pela API)       │
+│ valorHora         : number      (obrigatório)              │
+│ horasTrabalhadas  : number      (obrigatório, inteiro)     │
+│ descontos         : number      (obrigatório, padrão 0)    │
+│ dataContratacao   : string      (obrigatório, YYYY-MM-DD)  │
+│ departamento_id   : number      (FK → Departamento)        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Fórmula de cálculo salarial:**
+
+```
+salário = (valorHora × horasTrabalhadas) − descontos
+```
 
 ## 📁 Estrutura de Pastas
 
@@ -431,57 +483,7 @@ Não se destina a uso comercial.
 
 ---
 
-## 📘 Documento de Prototipação das Classes
 
-A documentação completa do projeto está disponível em:
-
-**[Grupo 01 — Ekoa Documento Prototipação de Classes](https://drive.google.com/file/d/1heBq1ZAsR9qWQ76w3E0GND5EFTUO9yR9/view?usp=sharing)**
 
 ---
 
-## 🗂 Diagrama Entidade-Relacionamento
-
-```text
-┌─────────────────────────────────────────────────────────────┐
-│                         USUÁRIO                            │
-├─────────────────────────────────────────────────────────────┤
-│ id            : number      (PK, auto-gerado)              │
-│ nome          : string      (obrigatório)                  │
-│ cpf           : string      (opcional, 11 dígitos)         │
-│ usuario       : string      (e-mail, login)                │
-│ senha         : string      (obrigatório)                  │
-│ foto          : string      (URL ou base64, opcional)      │
-└─────────────────────────────────────────────────────────────┘
-                          │
-                          │ 1:N (usuários cadastram e acessam)
-                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│                       DEPARTAMENTO                         │
-├─────────────────────────────────────────────────────────────┤
-│ id            : number      (PK, auto-gerado)              │
-│ nome          : string      (obrigatório, ≥3 caracteres)   │
-│ descricao     : string      (opcional, ≤255 caracteres)    │
-└─────────────────────────────────────────────────────────────┘
-                          │
-                          │ 1:N (um departamento, vários funcionários)
-                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│                       FUNCIONÁRIO                          │
-├─────────────────────────────────────────────────────────────┤
-│ id                : number      (PK, auto-gerado)          │
-│ nome              : string      (obrigatório, ≥3 chars)    │
-│ cargo             : string      (obrigatório, ≥3 chars)    │
-│ salario           : number      (calculado pela API)       │
-│ valorHora         : number      (obrigatório)              │
-│ horasTrabalhadas  : number      (obrigatório, inteiro)     │
-│ descontos         : number      (obrigatório, padrão 0)    │
-│ dataContratacao   : string      (obrigatório, YYYY-MM-DD)  │
-│ departamento_id   : number      (FK → Departamento)        │
-└─────────────────────────────────────────────────────────────┘
-```
-
-**Fórmula de cálculo salarial:**
-
-```
-salário = (valorHora × horasTrabalhadas) − descontos
-```
