@@ -480,10 +480,3 @@ Projeto desenvolvido com metodologia **Scrum** durante o bootcamp da **Generatio
 Este projeto foi desenvolvido para fins educacionais no âmbito do **Projeto Integrador da Generation Brasil**.
 
 Não se destina a uso comercial.
-
----
-
-
-
----
-
