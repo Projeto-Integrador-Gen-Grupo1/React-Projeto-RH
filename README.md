@@ -3,7 +3,7 @@
 <img src="./public/images/logo-ekoa.png" alt="Logo Ekoa" width="160" />
 
 
-**Soluções em RH para Diversidade**
+**Ekoa - Soluções em RH para Diversidade**
 
 ![Projeto Integrador Generation Brasil](https://img.shields.io/badge/Projeto%20Integrador-Generation%20Brasil-purple?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Concluído-green?style=for-the-badge)
